@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  djangoapp:
+    restart: always
+    build: .
+    volumes:
+      - .:/application
+      - static_volume:/static  # <-- bind the static volume
+      - media_volume:/media  # <-- bind the media volume
+    networks:
+      - nginx_network
+    env_file:
+      - .env
+    command: ["sh" , "entrypoint.sh"]
+
+  nginx:
+    image: nginx:1.13
+    ports:
+      - 80:80
+    volumes:
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+      - static_volume:/static  # <-- bind the static volume
+      - media_volume:/media  # <-- bind the media volume
+    depends_on:
+      - djangoapp
+    networks:
+      - nginx_network
+
+networks:
+  nginx_network:
+    driver: bridge
+
+volumes:
+  static_volume:  # <-- declare the static volume
+  media_volume:  # <-- declare the media volume
