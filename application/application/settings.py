@@ -51,8 +51,7 @@ MIDDLEWARE = [
     'application.middleware.DisableCSRFMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware'
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'application.urls'
@@ -67,9 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
+                'django.contrib.messages.context_processors.messages'
             ],
         },
     },
@@ -89,7 +86,7 @@ if os.getenv('POSTGRES_DB'):
             'USER': os.getenv('POSTGRES_USER'),
             'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
             'HOST': os.getenv('POSTGRES_HOST'),
-            'PORT': os.getenv('POSTGRES_PORT'),
+            'PORT': 5432,
         }
     }
 else:
@@ -139,7 +136,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'application', 'static'),]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'application', 'static')]
 
 ## Serving the STATIC FILES
 # as declared in NginX conf, it must match /opt/services/djangoapp/static/

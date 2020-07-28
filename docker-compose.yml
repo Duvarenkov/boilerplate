@@ -2,14 +2,16 @@ version: '3'
 
 services:
   djangoapp:
-    restart: always
     build: .
     volumes:
       - .:/application
       - static_volume:/static  # <-- bind the static volume
       - media_volume:/media  # <-- bind the media volume
+    depends_on:
+      - postgres
     networks:
       - nginx_network
+      - postgres
     env_file:
       - .env
     command: ["sh" , "entrypoint.sh"]
@@ -17,7 +19,7 @@ services:
   nginx:
     image: nginx:1.13
     ports:
-      - 80:80
+      - 8080:80
     volumes:
       - ./config/nginx/conf.d:/etc/nginx/conf.d
       - static_volume:/static  # <-- bind the static volume
@@ -27,10 +29,23 @@ services:
     networks:
       - nginx_network
 
+  postgres:
+    image: 'postgres:latest'
+    ports:
+      - '5433:5432'
+    networks:
+      - postgres
+    env_file:
+      - .env
+
 networks:
   nginx_network:
     driver: bridge
+  postgres:
+    driver: bridge
 
 volumes:
-  static_volume:  # <-- declare the static volume
-  media_volume:  # <-- declare the media volume
+  static_volume:
+    driver: local
+  media_volume:
+    driver: local
