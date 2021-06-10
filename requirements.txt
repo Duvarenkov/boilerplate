@@ -1,5 +1,5 @@
 boto3==1.9.228
-django==2.2.13
+django==2.2.24
 djangorestframework==3.10.3
 gunicorn==19.9.0
 psycopg2==2.8.3
